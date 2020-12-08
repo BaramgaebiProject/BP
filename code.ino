@@ -79,8 +79,7 @@ void CheckTag(){
     else{
       checkSerial();
     }
-      // 제대로 된 카드 요청
-      Serial.print("This card is not registed. Please check your card");
+      Serial.print("This card is not registed. Please check your card");  // 제대로 된 카드 요청
       Serial.println();
       delay(500);
     }
@@ -106,15 +105,32 @@ void dispenser(){
   analogWrite(3,0);
   return;
 }
-void back(){}
-void vote(){
+void inputPaper(){
+  digitalWrite(4,1);
+  digitalWrite(5,0);
+  analogWrite(3,255);
+  delay(500);
+  digitalWrite(4,0);
+  digitalWrite(5,0);
+  analogWrite(3,0);
   delay(10);
+  return;
+}
+void vote(){
+  delay(100);
+  Serial.print("Pick one");
+  Serial.println();
   dispenser();
   while(true){
-    // if pin input
-    // back()
+    delay(10);
+    if(){ // 버튼 입력시
+      Serial.print("Thanks your vote!");
+      Serial.println();
+      inputPaper();
+      mode_state = ??
+      return;
+    }
   }
-  delay(10);
   return;
 }
       
