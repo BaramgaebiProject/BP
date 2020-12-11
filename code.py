@@ -4,7 +4,6 @@ import socket
 import serial
 import string
 import pynmea2
-from tello_control_ui import TelloUI
 
 # program init
 inited_program = false
@@ -64,7 +63,8 @@ def check():
                 break
             
     # turn on camera
-    drone.video_freeze(false)
+    drone('streamon')
+    time.sleep(0.5)
     checking = input("Same man/woman?: (Yes:0, No:1) ")
     if(checking == 0):
         Arduino.wirte("VOTE".encode())
@@ -74,7 +74,8 @@ def check():
                     break
                 
     # turn off camera
-    drone.video_freeze(true)
+    drone('streamoff')
+    time.sleep(0.5)
     return
 
 #########################################################################
@@ -117,6 +118,7 @@ for(int i = 0; i < postions.size(); i++):
                 
         # go to customer
         drone("go %f %f %f 20" %(vecor[0], vecor[1], vector[2]))
+        time.sleep(0.05)
 
 
 
