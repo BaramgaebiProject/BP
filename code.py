@@ -4,6 +4,7 @@ import socket
 import serial
 import string
 import pynmea2
+from tello_control_ui import TelloUI
 
 # program init
 inited_program = false
@@ -53,6 +54,7 @@ def drone_loc():
         
 # check
 def check():
+    # tag card
     Arduino.wirte("CHECKID".encode())
     while(true):
         if(Arduino.in_waiting != 0):
@@ -62,12 +64,19 @@ def check():
                 break
             
     # turn on camera
-    # if done
-    Arduino.wirte("VOTE".encode())
-    while(true):
-        if(Arduino.in_waiting != 0):
-            if(Arduino.readline() == 'N'):
-                return
+    drone.video_freeze(false)
+    checking = input("Same man/woman?: (Yes:0, No:1) ")
+    if(checking == 0):
+        Arduino.wirte("VOTE".encode())
+        while(true):
+            if(Arduino.in_waiting != 0):
+                if(Arduino.readline() == 'N'):
+                    break
+                
+    # turn off camera
+    drone.video_freeze(true)
+    return
+
 #########################################################################
 
 # drone setting   
@@ -84,11 +93,14 @@ drone('takeoff')
 time.sleep(1)
 Arduino.write("MOVE".encode())
 
+# drone goes to customer
 for(int i = 0; i < postions.size(); i++):
     target = postions[i]
     while(true):
         drone_pos = drone_loc()
         vector = [target[0]-drone_pos[0], target[1]-drone_pos[1], target[2]-drone_pos[2]]
+
+        # drone arrives at customer
         if(vector[0] ** 2 + vector[1] ** 2 + vector[2] ** 2 < 50):
             drone('land')
             time.sleep(1)
@@ -98,9 +110,13 @@ for(int i = 0; i < postions.size(); i++):
             time.sleep(1)
             Arduino.write("MOVE".encode())
             break
+        
+        # meet hurdle
         if(Arduino.in_waiting != 0):
-        # go to target
-
+            if(Arduino.readline() != None):
+                
+        # go to customer
+        drone("go %f %f %f 20" %(vecor[0], vecor[1], vector[2]))
 
 
 
