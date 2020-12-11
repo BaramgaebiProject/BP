@@ -24,24 +24,6 @@ void sampling(){
   Serial.println(distint);
   return distint;
 }
-void dispenser(){
-  digitalWrite(4,0);
-  digitalWrite(5,1);
-  analogWrite(3,255);
-  delay(300);
-  digitalWrite(4,0);
-  digitalWrite(5,0);
-  analogWrite(3,0);
-}
-void setup() {
-  Serial.begin(9600);                     // 시리얼 통신, 속도는 9600
-  SPI.begin();                             // SPI 초기화(SPI : 하나의 마스터와 다수의 SLAVE(종속적인 역활)간의 통신 방식)
-  Serial.begin(9600);
-  pinMode(4, OUTPUT);
-  pinMode(5, OUTPUT); 
-  pinMode(8,OUTPUT);
-  pinMode(9,OUTPUT);
-}
 
 // CHECKID
 void checkSerial(){ // 카드가 들어오면 등록된 tag_id에 있는지 찾아봄
